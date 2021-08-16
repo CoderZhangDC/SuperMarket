@@ -16,7 +16,6 @@ public class EmpUtil {
     //员工上班打卡
     public static void clockIn(DataOutputStream dos, DataInputStream dis, Employee employee) throws IOException {
         //向服务器提交打卡请求
-        System.out.println(employee.getNumber());
         dos.writeUTF("Emp_Clock_In:"+employee.getNumber());
         //接受服务器的打卡结果
         String s = dis.readUTF();
@@ -27,7 +26,6 @@ public class EmpUtil {
     //员工下班打卡
     public static void clockOff(DataOutputStream dos, DataInputStream dis,Employee employee) throws IOException {
         //向服务器提交打卡请求
-        System.out.println(employee.getNumber());
         dos.writeUTF("Emp_Clock_Off:"+employee.getNumber());
         //接受服务器的打卡结果
         String s = dis.readUTF();

@@ -27,4 +27,19 @@ public interface EmpDao {
 
     //根据员工编号查找员工
     Employee findEmpByNumber(String number);
+
+    //修改用户的补卡次数
+    void updateEmpReClockCount(String empNumber);
+
+    //根据条件查找
+    List<Employee> findEmpByCondition(String message,String type);
+
+    //查询离职员工
+    List<Employee> queryResignEmp();
+
+    //根据薪水排序查询查询，升序/降序
+    List<Employee> queryEmpBySalaryTop(String type);
+
+    //查询指定区间的薪水员工
+    List<Employee> queryEmpBySalaryRange(Integer integer, Integer integer1);
 }

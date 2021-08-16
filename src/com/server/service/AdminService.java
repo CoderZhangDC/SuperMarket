@@ -54,4 +54,40 @@ public interface AdminService {
 
     //删除工作日
     String delWorkDate(String message);
+
+    //通过员工编号查询员工信息
+    String queryEmpByNumber(String message);
+
+    //查询指定日期的考勤信息
+    String queryClockByDate(String message);
+
+    //查看指定日期的异常考勤信息
+    String queryErrorClockByDate(String message);
+
+    //根据员工编号查询员工考勤记录
+    String queryClockByEmp(String message);
+
+    //补卡
+    String queryReClock(String message,String type);
+
+    //查询本月销售额度
+    String queryMonthSell();
+
+    //查询本季度销售额度
+    String querySeasonSell();
+
+    //查询指定日期段的销售额度
+    String queryRangeSell(String message);
+
+    //根据条件查找
+    String queryEmpByCondition(String message,String type);
+
+    //查找已离职的员工
+    String queryEmpOfResign();
+
+    //查询薪水前10或后5
+    String querySalaryTop(String type);
+
+    //薪水区间查询
+    String querySalaryRange(String message);
 }

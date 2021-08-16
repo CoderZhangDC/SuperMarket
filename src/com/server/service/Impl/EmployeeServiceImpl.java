@@ -5,6 +5,9 @@ import com.server.dao.Impl.ClockDaoImpl;
 import com.server.pojo.ClockInfo;
 import com.server.service.EmployeeService;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @Author:zdc
  * @Date 2021/8/12 17:26
@@ -19,9 +22,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         ClockInfo ci = cd.queryClockInByNumber(empNumber);
         //若ci不为null，则证明打过卡
         if (ci!=null){
+            //如果打过下班卡
+            if (ci.getClockOffTime()!=null){
+                return "打完下班卡，无法再打上班卡！";
+            }
             return "上班打卡失败，请勿重复打卡！";
         }
-        //若不存在，则进行数据库添加打卡记录
+        //若不存在，判断现在时间是否超过18点
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)-18>0){
+            return "现在下班了，无法打上班卡！";
+        }
+        //则进行数据库添加打卡记录
         cd.insertClockIn(empNumber);
         return "上班打卡成功！";
     }
@@ -40,7 +51,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             cd.updateClockOff(empNumber);
             return "下班打卡成功！";
         }
-        //如果用户没打上班卡，插入打卡记录
+        //判断现在是否是18点前
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)-18<0){
+            return "你还未打上班卡，请先打上班卡！";
+        }
+        //插入打卡记录
         cd.insertClockOff(empNumber);
         return "下班打卡成功！";
     }

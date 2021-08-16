@@ -1,9 +1,11 @@
 package com.server.test;
 
+import com.client.client.utils.CheckUtil;
 import com.server.dao.Impl.SellDaoImpl;
 import com.server.dao.SellDao;
 import com.server.pojo.Report;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -51,14 +53,18 @@ public class Test {
 //            e.printStackTrace();
 //        }
 
+//        System.out.println(CheckUtil.isDate("2020-02-30"));
+        Calendar instance = Calendar.getInstance();
+        System.out.println(instance.get(Calendar.HOUR_OF_DAY)-18);
+
 //        String s = "\"2021-8-13\"";
 //        System.out.println(s);
 //        s = JSON.parseObject(s, String.class);
 //        System.out.println(s);
 
-        SellDao sd = new SellDaoImpl();
-        List<Report> reportList = sd.queryReport();
-        reportList.forEach(li-> System.out.println(li));
+//        SellDao sd = new SellDaoImpl();
+//        List<Report> reportList = sd.queryReport();
+//        reportList.forEach(li-> System.out.println(li));
 
     }
 }

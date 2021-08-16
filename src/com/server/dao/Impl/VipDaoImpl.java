@@ -24,7 +24,7 @@ public class VipDaoImpl implements VipDao {
             return null;
         }
         Vip vip = null;
-        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_number=?", number);
+        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_remark=1 and v_number=?", number);
         try {
             if (rs.next()){
                 vip = new Vip();
@@ -46,7 +46,7 @@ public class VipDaoImpl implements VipDao {
     @Override
     public List<Vip> queryAllVip() {
         List<Vip> vipList = new ArrayList<>();
-        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_number != 'null'");
+        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_remark=1 and v_number != 'null'");
         try {
             while (rs.next()){
                 Vip vip = new Vip();
@@ -81,7 +81,7 @@ public class VipDaoImpl implements VipDao {
 
     @Override
     public int insertVip(Vip vip) {
-        return JDBCUtil.executeUpdate("insert into vip values(?,?,?,?,?)", vip.getNumber(), vip.getName(), vip.getScore(), vip.getPhone(), vip.getDate());
+        return JDBCUtil.executeUpdate("insert into vip values(?,?,?,?,?,1)", vip.getNumber(), vip.getName(), vip.getScore(), vip.getPhone(), vip.getDate());
     }
 
     @Override
@@ -92,8 +92,7 @@ public class VipDaoImpl implements VipDao {
 
     @Override
     public int deleteVip(String message) {
-        System.out.println(message);
-        return JDBCUtil.executeUpdate("delete from vip where v_number=?",message);
+        return JDBCUtil.executeUpdate("update vip set v_remark=0 where v_number=?",message);
     }
 
     @Override

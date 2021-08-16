@@ -8,8 +8,11 @@ public interface ClockDao {
     //查询员工考勤信息
     List<ClockInfo> queryAllClock();
 
-    //查询员工今日考勤信息
-    List<ClockInfo> queryTodayClock();
+    //查询指定日期的打卡记录
+    List<ClockInfo> queryClockByDate(String date);
+
+    //查询指定日期的异常打卡记录
+    List<ClockInfo> queryErrorClockByDate(String date);
 
     //获取员工今天打卡情况
     ClockInfo queryClockInByNumber(String empNumber);
@@ -22,4 +25,13 @@ public interface ClockDao {
 
     //员工下班打卡（未打过上班卡）
     void insertClockOff(String empNumber);
+
+    //根据员工编号查找员工的考勤记录
+    List<ClockInfo> queryClockByEmpNumber(String message);
+
+    //员工补上班卡
+    int updateClockIn(ClockInfo clockInfo);
+
+    //员工补下班卡
+    int updateClockOff2(ClockInfo clockInfo);
 }

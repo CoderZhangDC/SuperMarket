@@ -83,6 +83,26 @@ public class ServerRunnable implements Runnable {
                     case "Admin_BuyerAdmin_delete":
                         dos.writeUTF(as.deleteEmp(message,"采购员"));
                         break;
+                    //查询指定员工
+                    case "Admin_EmpNumber_query":
+                        dos.writeUTF(as.queryEmpByNumber(message));
+                        break;
+                    //根据姓名字段查找员工
+                    case "Admin_Emp_query_name":
+                        dos.writeUTF(as.queryEmpByCondition(message,"name"));
+                        break;
+                    //根据性别查找员工
+                    case "Admin_Emp_query_sex":
+                        dos.writeUTF(as.queryEmpByCondition(message,"sex"));
+                        break;
+                    //根据注册年份查找员工
+                    case "Admin_Emp_query_registerYear":
+                        dos.writeUTF(as.queryEmpByCondition(message,"registerYear"));
+                        break;
+                    //查询已离职的员工
+                    case "Admin_Emp_query_resign":
+                        dos.writeUTF(as.queryEmpOfResign());
+                        break;
                     //查看全部考勤
                     case "Admin_Clock_queryAll":
                         dos.writeUTF(as.queryAllClock());
@@ -91,6 +111,26 @@ public class ServerRunnable implements Runnable {
                     case "Admin_Clock_queryToday":
                         dos.writeUTF(as.queryTodayClock());
                         break;
+                    //查询指定日期所有考勤
+                    case "Admin_Clock_queryDate":
+                        dos.writeUTF(as.queryClockByDate(message));
+                        break;
+                    //查询指定日期的异常考勤
+                    case "Admin_ErrorClock_queryDate":
+                        dos.writeUTF(as.queryErrorClockByDate(message));
+                        break;
+                    //查询员工的考勤记录
+                    case "Admin_Clock_queryEmp":
+                        dos.writeUTF(as.queryClockByEmp(message));
+                        break;
+                    //补上班卡
+                    case "Admin_ReClockIn":
+                        dos.writeUTF(as.queryReClock(message,"in"));
+                        break;
+                    //补下班卡
+                    case "Admin_ReClockOff":
+                        dos.writeUTF(as.queryReClock(message,"off"));
+                        break;
                     //查询总营业额
                     case "Admin_Sell_queryTotal":
                         dos.writeUTF(as.queryTotalSell());
@@ -98,6 +138,18 @@ public class ServerRunnable implements Runnable {
                     //查询今日营业额
                     case "Admin_Sell_queryToday":
                         dos.writeUTF(as.queryTodaySell());
+                        break;
+                    //查询今月营业额
+                    case "Admin_Sell_queryMonth":
+                        dos.writeUTF(as.queryMonthSell());
+                        break;
+                    //查询指定时间段的营业额
+                    case "Admin_Sell_queryRange":
+                        dos.writeUTF(as.queryRangeSell(message));
+                        break;
+                    //查询本季度营业额
+                    case "Admin_Sell_querySeason":
+                        dos.writeUTF(as.querySeasonSell());
                         break;
                     //查询所有会员信息
                     case "Admin_Vip_query":
@@ -166,6 +218,19 @@ public class ServerRunnable implements Runnable {
                     //积分兑换
                     case "Vip_Score_Exchange":
                         dos.writeUTF(vs.scoreExchange(message));
+                        break;
+                    //薪资查询，top10
+                    case "Admin_EmpSalary_query_top10":
+                        dos.writeUTF(as.querySalaryTop("top10"));
+                        break;
+                    //薪资查询，区间
+                    case "Admin_EmpSalary_query_range":
+                        dos.writeUTF(as.querySalaryRange(message));
+                        break;
+                    //薪资查询，top5
+                    case "Admin_EmpSalary_query_top5":
+                        dos.writeUTF(as.querySalaryTop("top5"));
+                        break;
                 }
             }
         } catch (Exception e) {

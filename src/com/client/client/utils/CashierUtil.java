@@ -31,8 +31,11 @@ public class CashierUtil {
         if (useVip.equalsIgnoreCase("Y")) {
             //获取会员卡号
             while (true) {
-                System.out.println("请输入会员卡号：");
+                System.out.println("请输入会员卡号（输入0退出）：");
                 String vipNumber = sc.next();
+                if (vipNumber.equals("0")){
+                    break;
+                }
                 //请求服务器查看会员卡是否存在
                 dos.writeUTF("Cashier_Vip_query:"+ vipNumber);
                 //接受服务器响应
@@ -110,12 +113,20 @@ public class CashierUtil {
     public static void addVip(DataOutputStream dos, DataInputStream dis) throws IOException {
         while (true){
             //获取用户输入
-            System.out.println("请填写信息（姓名-电话）：");
+            System.out.println("请填写信息（姓名-电话）（输入0退出）：");
             String message = sc.next();
+            if (message.equals("0")){
+                break;
+            }
             String[] split = message.split("-");
             //创建vip对象
             Vip vip = new Vip();
             try {
+                //判断手机号输入是否有误
+                if (!CheckUtil.isValidPhoneNumber(split[1])){
+                    System.out.println("（手机号）格式输入有误！");
+                    continue;
+                }
                 vip.setName(split[0]);
                 vip.setPhone(split[1]);
             }catch (Exception e){

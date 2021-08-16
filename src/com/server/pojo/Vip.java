@@ -20,5 +20,6 @@ public class Vip {
     private int score;
     private String phone;
     private Date date;
+    private int remark;
 
 }

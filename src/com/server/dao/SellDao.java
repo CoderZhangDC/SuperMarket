@@ -11,15 +11,15 @@ import java.util.List;
  * @Version 1.0
  */
 public interface SellDao {
-    //查询总销售额
-    String queryTotalSell();
-
-    //查询今日营业额
-    Object queryTodaySell();
+    //查询销售额
+    String querySellByType(String type);
 
     //插入消费记录
     void insertShellInfo(SellInfo si);
 
     //查看财务报表
     List<Report> queryReport();
+
+    //查询时间段的销售额
+    String querySellByRange(List<String> list);
 }

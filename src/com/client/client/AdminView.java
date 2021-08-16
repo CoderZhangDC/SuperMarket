@@ -2,16 +2,21 @@ package com.client.client;
 
 import com.alibaba.fastjson.JSON;
 import com.client.client.utils.AdminUtil;
+import com.client.client.utils.CheckUtil;
+import com.client.client.utils.DateFormatUtil;
 import com.client.client.utils.EmpUtil;
 import com.server.pojo.Employee;
 import com.server.utils.CloseUtil;
+import jdk.nashorn.internal.ir.IfNode;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
 
 /**
  * @Author:zdc
@@ -117,7 +122,7 @@ public class AdminView {
     private void clockOff() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockOff(dos, dis,admin);
+            EmpUtil.clockOff(dos, dis, admin);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,7 +133,7 @@ public class AdminView {
     private void clockIn() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockIn(dos, dis,admin);
+            EmpUtil.clockIn(dos, dis, admin);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,22 +142,63 @@ public class AdminView {
 
 
     //查询人员信息
-    private void findUser() {
-        System.out.println("---------------成员名单---------------");
+    public void findUser() {
+        System.out.println("请选择操作：1.查询所有在职员工 2.查询指定的员工 3.模糊查询员工 4.查询已离职员工 5.按角色查询在职员工 6.员工薪水查询 7.返回");
+        String input = sc.next();
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            //请求服务查询所有成员
-            dos.writeUTF("Admin_Emp_query:");
-            //获得服务器响应
-            String employeeString = dis.readUTF();
-            //解析
-            List<Employee> employeeList = JSON.parseArray(employeeString, Employee.class);
-            //打印输出
-            System.out.println("编号\t\t姓名\t\t性别\t电话\t\t\t职位");
-            for (Employee e:employeeList){
-                System.out.println(e.getNumber()+"\t\t"+e.getUsername()+"\t\t"+e.getSex()+"\t\t"+e.getPhone()+"\t\t"+e.getRoleString());
+            //判断操作类型
+            switch (input) {
+                //查询所有在职员工
+                case "1":
+                    AdminUtil.findEmp(dos, dis);
+                    break;
+                //查询指定员工
+                case "2":
+                    AdminUtil.findEmpByNumber(dos, dis, sc);
+                    break;
+                //条件查找
+                case "3":
+                    AdminUtil.findEmpByCondition(dos, dis);
+                    break;
+                //查询已离职员工
+                case "4":
+                    AdminUtil.findEmpByResign(dos, dis);
+                    break;
+                //根据角色查找员工
+                case "5":
+                    while (true) {
+                        System.out.println("选择角色类型：1.采购员 2.收银员 3.返回");
+                        String role = sc.next();
+                        switch (role) {
+                            case "1":
+                                AdminUtil.queryEmp(dos, dis, "buyer");
+                                break;
+                            case "2":
+                                AdminUtil.queryEmp(dos, dis, "cashier");
+                                break;
+                            case "3":
+                                break;
+                            default:
+                                System.out.println("输入有误！");
+                                continue;
+                        }
+                        break;
+                    }
+                    break;
+                //员工薪水查询
+                case "6":
+                    AdminUtil.findEmpSalary(dos, dis);
+                    break;
+                //返回主页
+                case "7":
+                    indexView();
+                    break;
+                default:
+                    System.out.println("输入有误！");
+                    break;
             }
-            indexView();
+            findUser();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -198,7 +244,7 @@ public class AdminView {
 
     //查询营业额
     private void SaleAdmin() {
-        System.out.println("请选择操作：1.查询今日营业额\t2.查询总营业额\t3.退出");
+        System.out.println("请选择操作：1.查询今日营业额\t2.查询月营业额\t3.查询季度营业额\t4.查询总营业额\t5.查询指定日期区间的营业额\t6.返回");
         String input = sc.next();
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
@@ -206,14 +252,26 @@ public class AdminView {
             switch (input) {
                 //查询今日营业额
                 case "1":
-                    AdminUtil.queryTotalSell(dos, dis);
+                    AdminUtil.querySell(dos, dis, "today");
+                    break;
+                //查询本月营业额
+                case "2":
+                    AdminUtil.querySell(dos, dis, "month");
+                    break;
+                //查询本季度营业额
+                case "3":
+                    AdminUtil.querySell(dos, dis, "season");
                     break;
                 //查询总营业额
-                case "2":
-                    AdminUtil.queryTodaySell(dos, dis);
+                case "4":
+                    AdminUtil.querySell(dos, dis, "total");
+                    break;
+                //查询指定日期区间的营业额
+                case "5":
+                    AdminUtil.queryRangeSell(dos, dis);
                     break;
                 //返回主页
-                case "3":
+                case "6":
                     indexView();
                     break;
                 default:
@@ -228,7 +286,7 @@ public class AdminView {
 
     //出勤管理
     private void clockAdmin() {
-        System.out.println("请选择操作：1.查看今日考勤\t\t2.查看全部考勤\t\t3.退出");
+        System.out.println("请选择操作：1.查看今日考勤\t2.查看指定日期考勤\t3.查看指定日期的异常考勤\t4.查看全部考勤\t5.员工补卡\t6.退出");
         String input = sc.next();
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
@@ -237,12 +295,24 @@ public class AdminView {
                 case "1":
                     AdminUtil.queryTodayClock(dos, dis);
                     break;
-                //查看全部考勤
+                //查看指定日期的所有考勤
                 case "2":
+                    AdminUtil.queryClockByDate(dos, dis, "all");
+                    break;
+                //查看指定日期的所有异常考勤
+                case "3":
+                    AdminUtil.queryClockByDate(dos, dis, "error");
+                    break;
+                //查看全部考勤
+                case "4":
                     AdminUtil.queryAllClock(dos, dis);
                     break;
+                //修改员工考勤
+                case "5":
+                    AdminUtil.adminClock(dos, dis);
+                    break;
                 //返回主页
-                case "3":
+                case "6":
                     indexView();
                     break;
                 default:
@@ -330,5 +400,4 @@ public class AdminView {
             e.printStackTrace();
         }
     }
-
 }

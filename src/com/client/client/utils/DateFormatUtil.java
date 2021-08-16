@@ -20,7 +20,7 @@ public class DateFormatUtil {
 
     //时间转换工具
     public static String datetimeFormat(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return date==null?"没有打卡\t\t\t":sdf.format(date);
     }
 

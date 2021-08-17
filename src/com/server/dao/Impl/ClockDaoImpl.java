@@ -161,6 +161,6 @@ public class ClockDaoImpl implements ClockDao {
     @Override
     public int updateClockOff2(ClockInfo clockInfo) {
         return JDBCUtil.executeUpdate("update clock_info set clock_off_time = ? where employee_no = ? and clock_date = ?",
-                DateFormatUtil.dateFormat(clockInfo.getClockDate())+" 17:00",clockInfo.getEmpNumber(),DateFormatUtil.dateFormat(clockInfo.getClockDate()));
+                DateFormatUtil.dateFormat(clockInfo.getClockDate())+" 18:00",clockInfo.getEmpNumber(),DateFormatUtil.dateFormat(clockInfo.getClockDate()));
     }
 }

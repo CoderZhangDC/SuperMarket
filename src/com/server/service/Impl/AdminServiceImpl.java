@@ -51,7 +51,6 @@ public class AdminServiceImpl implements AdminService {
         //把信息转换成Employee类
         Employee employee = JSON.parseObject(message, Employee.class);
         //调用数据库修改员工
-        System.out.println(employee);
         int i = ed.updateEmp(employee);
         //如果i=1，则证明修改成功
         return i == 1 ? "修改成功！" : "修改失败！";

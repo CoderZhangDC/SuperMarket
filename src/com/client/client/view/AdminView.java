@@ -46,7 +46,7 @@ public class AdminView {
     //添加员工
     public static void addEmp(DataOutputStream dos, DataInputStream dis,String role) throws IOException {
         while (true) {
-            System.out.println("请填写信息(编号-姓名-密码-性别-电话)");
+            System.out.println("请填写信息(编号-姓名-密码-性别-电话-工资)");
             //获取用户输入信息
             String cashierInfo = sc.next();
             String[] split = cashierInfo.split("-");
@@ -62,6 +62,7 @@ public class AdminView {
                 employee.setPassword(split[2]);
                 employee.setSex(split[3]);
                 employee.setPhone(split[4]);
+                employee.setSalary(Integer.parseInt(split[5]));
             } catch (Exception e) {
                 //输入格式有误，跳出本次循环，重新输入
                 System.out.println("输入格式有误！");
@@ -100,10 +101,10 @@ public class AdminView {
             //如果存在
             Employee employee = JSON.parseObject(s1, Employee.class);
             //打印员工信息
-            System.out.println("编号\t\t姓名\t\t性别\t电话\t\t\t注册时间");
-            System.out.println(employee.getNumber()+"\t\t"+employee.getUsername()+"\t\t"+employee.getSex()+"\t\t"+employee.getPhone()+"\t\t"+DateFormatUtil.datetimeFormat(employee.getRegisterTime()));
+            System.out.println("编号\t\t姓名\t\t性别\t电话\t\t\t注册时间\t\t\t\t\t工资");
+            System.out.println(employee.getNumber()+"\t\t"+employee.getUsername()+"\t\t"+employee.getSex()+"\t\t"+employee.getPhone()+"\t\t"+DateFormatUtil.datetimeFormat(employee.getRegisterTime())+"\t\t"+ employee.getSalary());
             while (true){
-                System.out.println("请输入要修改的信息（1.姓名 2.密码 3.性别 4.电话 5.退出）");
+                System.out.println("请输入要修改的信息（1.姓名 2.密码 3.性别 4.电话 5.工资 6.退出）");
                 String cashierInfo = sc.next();
                 //根据不同的条件修改不同的字段
                 if (cashierInfo.equals("1")){
@@ -135,6 +136,15 @@ public class AdminView {
                     }
                     employee.setPhone(phone);
                 }else if (cashierInfo.equals("5")){
+                    System.out.println("请输入工资：");
+                    String salary = sc.next();
+                    try {
+                        employee.setSalary(Integer.parseInt(salary));
+                    }catch (Exception e){
+                        System.out.println("输入有误！");
+                        continue;
+                    }
+                }else if (cashierInfo.equals("6")){
                     //退出
                     break;
                 }else {

@@ -14,7 +14,7 @@ public class SystemStart {
     public static void main(String[] args) throws IOException {
         ExecutorService es = Executors.newFixedThreadPool(5);
         ServerSocket ss = new ServerSocket(6666);
-        while (true){
+        while (true) {
             es.submit(new ServerRunnable(ss.accept()));
         }
     }

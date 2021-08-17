@@ -45,15 +45,15 @@ public class EmpDaoImpl implements EmpDao {
 
     @Override
     public int insertEmp(Employee employee) {
-       return JDBCUtil.executeUpdate("insert into employee(number,username,password,sex,phone,role,remark,register_time) values (?,?,?,?,?,?,1,?)"
+       return JDBCUtil.executeUpdate("insert into employee(number,username,password,sex,phone,role,remark,register_time,re_clock_count,salary) values (?,?,?,?,?,?,1,?,5,?)"
                ,employee.getNumber(),employee.getUsername(),employee.getPassword(),employee.getSex(),employee.getPhone(),
-               employee.getRole(), DateFormatUtil.datetimeFormat(new Date()));
+               employee.getRole(), DateFormatUtil.datetimeFormat(new Date()),employee.getSalary());
     }
 
     @Override
     public int updateEmp(Employee employee) {
-        return JDBCUtil.executeUpdate("update employee set username=?,password=?,sex=?,phone=? where number=?",
-                employee.getUsername(), employee.getPassword(), employee.getSex(), employee.getPhone(), employee.getNumber());
+        return JDBCUtil.executeUpdate("update employee set username=?,password=?,sex=?,phone=?,salary=? where number=?",
+                employee.getUsername(), employee.getPassword(), employee.getSex(), employee.getPhone(), employee.getSalary(), employee.getNumber());
     }
 
     @Override
@@ -104,6 +104,7 @@ public class EmpDaoImpl implements EmpDao {
                 employee.setRemark(rs.getInt("remark"));
                 employee.setRoleString(rs.getString("r_name"));
                 employee.setRegisterTime(rs.getTimestamp("register_time"));
+                employee.setSalary(rs.getInt("salary"));
                 employee.setReClockCount(rs.getInt("re_clock_count"));
             }
         }catch (Exception e){

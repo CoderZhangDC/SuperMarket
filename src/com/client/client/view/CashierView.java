@@ -139,6 +139,29 @@ public class CashierView {
                 System.out.println("输入格式有误！");
                 continue;
             }
+            //向服务器发起短信验证请求
+            dos.writeUTF("Send_Sms_phone:"+vip.getPhone());
+            //接受验证码
+            String s1 = dis.readUTF();
+            //如果该手机被停用
+            if (s1.equals("该手机号已停用！")){
+                System.out.println(s1);
+                continue;
+            }
+            //验证码校验
+            while (true) {
+                System.out.println("请输入验证码（输入0退出）：");
+                String checkCode = sc.next();
+                //退出
+                if (checkCode.equals("0")){
+                    return;
+                }
+                //判断是否输入一致
+                if (s1.equals(checkCode)){
+                    break;
+                }
+                System.out.println("验证码输入错误！");
+            }
             //输入没问题，进行服务器请求添加vip
             dos.writeUTF("Admin_Vip_add:"+ JSON.toJSONString(vip));
             //获取服务器响应

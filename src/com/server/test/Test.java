@@ -1,5 +1,8 @@
 package com.server.test;
 
+import com.server.utils.SmsUtil;
+
+import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -8,7 +11,7 @@ import java.util.Calendar;
  * @Version 1.0
  */
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        EmployeeDao ed = new EmployeeDaoImpl();
 //        Employee s0002 = ed.findEmpByNumber("S0002");
 //        System.out.println(s0002);
@@ -48,8 +51,8 @@ public class Test {
 //        }
 
 //        System.out.println(CheckUtil.isDate("2020-02-30"));
-        Calendar instance = Calendar.getInstance();
-        System.out.println(instance.get(Calendar.HOUR_OF_DAY)-18);
+//        Calendar instance = Calendar.getInstance();
+//        System.out.println(instance.get(Calendar.HOUR_OF_DAY)-18);
 
 //        String s = "\"2021-8-13\"";
 //        System.out.println(s);
@@ -60,5 +63,6 @@ public class Test {
 //        List<Report> reportList = sd.queryReport();
 //        reportList.forEach(li-> System.out.println(li));
 
+        System.out.println(SmsUtil.sendSms("1355213213312", "1111"));
     }
 }

@@ -8,4 +8,7 @@ package com.server.service;
 public interface VipService {
     //积分兑换
     String scoreExchange(String message);
+
+    //短信验证
+    String checkCode(String message);
 }

@@ -259,6 +259,9 @@ public class ServerRunnable implements Runnable {
                     case "Buyer_del_goods":
                         dos.writeUTF(bs.delGoods(message));
                         break;
+                    //发送短信验证码
+                    case "Send_Sms_phone":
+                        dos.writeUTF(vs.checkCode(message));
                 }
             }
         } catch (Exception e) {

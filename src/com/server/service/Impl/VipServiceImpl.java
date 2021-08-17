@@ -8,14 +8,18 @@ import com.server.dao.VipDao;
 import com.server.pojo.Goods;
 import com.server.pojo.ScoreInfo;
 import com.server.service.VipService;
+import com.server.utils.SmsUtil;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Random;
 
 /**
  * @Author:zdc
  * @Date 2021/8/13 16:32
  * @Version 1.0
  */
+
 public class VipServiceImpl implements VipService {
     private GoodDao gd = new GoodDaoImpl();
     private VipDao vd = new VipDaoImpl();
@@ -40,5 +44,31 @@ public class VipServiceImpl implements VipService {
         //调用数据库添加积分兑换数据
         vd.insertScoreInfo(scoreInfo);
         return JSON.toJSONString(goodScore);
+    }
+
+    @Override
+    public String checkCode(String message) {
+
+        //生成一个六位数的验证码
+        StringBuilder checkCode = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            checkCode.append(random.nextInt(10));
+        }
+        System.out.println(message);
+        System.out.println(checkCode);
+        //发送短信
+        String s = "";
+        try {
+            s = SmsUtil.sendSms(message, checkCode.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //判断响应状态
+        if (s.equals("-1")){
+            return "该手机号已停用！";
+        }
+        //返回验证码
+        return checkCode.toString();
     }
 }

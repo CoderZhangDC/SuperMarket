@@ -1,4 +1,4 @@
-package com.client.client.utils;
+package com.client.client.view;
 
 import com.alibaba.fastjson.JSON;
 import com.server.pojo.Goods;
@@ -15,7 +15,7 @@ import java.util.Scanner;
  * @Date 2021/8/12 23:12
  * @Version 1.0
  */
-public class BuyerUtil {
+public class BuyerView {
 
     private static Scanner sc = new Scanner(System.in);
 

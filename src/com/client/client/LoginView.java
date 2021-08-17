@@ -73,15 +73,15 @@ public class LoginView {
             //根据不同的角色，跳转到不同的页面
             switch (role) {
                 case 1:
-                    AdminView av = new AdminView(employee,socket);
+                    AdminIndex av = new AdminIndex(employee,socket);
                     av.indexView();
                     break;
                 case 2:
-                    CashierView cv = new CashierView(employee,socket);
+                    CashierIndex cv = new CashierIndex(employee,socket);
                     cv.indexView();
                     break;
                 case 3:
-                    BuyerView bv = new BuyerView(employee,socket);
+                    BuyerIndex bv = new BuyerIndex(employee,socket);
                     bv.indexView();
                     break;
             }
@@ -117,7 +117,7 @@ public class LoginView {
             }
             //登录成功，解析JSON
             Vip vip1 = JSON.parseObject(s, Vip.class);
-            VipView vipView = new VipView(vip1,socket);
+            VipIndex vipView = new VipIndex(vip1,socket);
             vipView.indexView();
         } catch (IOException e) {
             e.printStackTrace();

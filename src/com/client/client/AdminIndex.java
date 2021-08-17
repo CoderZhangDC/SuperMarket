@@ -1,37 +1,30 @@
 package com.client.client;
 
-import com.alibaba.fastjson.JSON;
-import com.client.client.utils.AdminUtil;
-import com.client.client.utils.CheckUtil;
-import com.client.client.utils.DateFormatUtil;
-import com.client.client.utils.EmpUtil;
+import com.client.client.view.AdminView;
+import com.client.client.view.EmpView;
 import com.server.pojo.Employee;
 import com.server.utils.CloseUtil;
-import jdk.nashorn.internal.ir.IfNode;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Executors;
 
 /**
  * @Author:zdc
  * @Date 2021/8/11 16:12
  * @Version 1.0
  */
-public class AdminView {
+public class AdminIndex {
     private Employee admin;
     private Socket socket;
     private Scanner sc = new Scanner(System.in);
 
-    public AdminView() {
+    public AdminIndex() {
     }
 
-    public AdminView(Employee admin, Socket socket) {
+    public AdminIndex(Employee admin, Socket socket) {
         this.admin = admin;
         this.socket = socket;
     }
@@ -94,15 +87,15 @@ public class AdminView {
             switch (input) {
                 //查看工作日
                 case "1":
-                    AdminUtil.queryWorkDate(dos, dis);
+                    AdminView.queryWorkDate(dos, dis);
                     break;
                 //添加工作日
                 case "2":
-                    AdminUtil.addWorkDate(dos, dis);
+                    AdminView.addWorkDate(dos, dis);
                     break;
                 //删除工作日
                 case "3":
-                    AdminUtil.delWorkDate(dos, dis);
+                    AdminView.delWorkDate(dos, dis);
                     break;
                 case "4":
                     indexView();
@@ -122,7 +115,7 @@ public class AdminView {
     private void clockOff() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockOff(dos, dis, admin);
+            EmpView.clockOff(dos, dis, admin);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,7 +126,7 @@ public class AdminView {
     private void clockIn() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockIn(dos, dis, admin);
+            EmpView.clockIn(dos, dis, admin);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,19 +144,19 @@ public class AdminView {
             switch (input) {
                 //查询所有在职员工
                 case "1":
-                    AdminUtil.findEmp(dos, dis);
+                    AdminView.findEmp(dos, dis);
                     break;
                 //查询指定员工
                 case "2":
-                    AdminUtil.findEmpByNumber(dos, dis, sc);
+                    AdminView.findEmpByNumber(dos, dis, sc);
                     break;
                 //条件查找
                 case "3":
-                    AdminUtil.findEmpByCondition(dos, dis);
+                    AdminView.findEmpByCondition(dos, dis);
                     break;
                 //查询已离职员工
                 case "4":
-                    AdminUtil.findEmpByResign(dos, dis);
+                    AdminView.findEmpByResign(dos, dis);
                     break;
                 //根据角色查找员工
                 case "5":
@@ -172,10 +165,10 @@ public class AdminView {
                         String role = sc.next();
                         switch (role) {
                             case "1":
-                                AdminUtil.queryEmp(dos, dis, "buyer");
+                                AdminView.queryEmp(dos, dis, "buyer");
                                 break;
                             case "2":
-                                AdminUtil.queryEmp(dos, dis, "cashier");
+                                AdminView.queryEmp(dos, dis, "cashier");
                                 break;
                             case "3":
                                 break;
@@ -188,7 +181,7 @@ public class AdminView {
                     break;
                 //员工薪水查询
                 case "6":
-                    AdminUtil.findEmpSalary(dos, dis);
+                    AdminView.findEmpSalary(dos, dis);
                     break;
                 //返回主页
                 case "7":
@@ -214,19 +207,19 @@ public class AdminView {
             switch (input) {
                 //查看所有会员
                 case "1":
-                    AdminUtil.queryAllVip(dos, dis);
+                    AdminView.queryAllVip(dos, dis);
                     break;
                 //添加会员
                 case "2":
-                    AdminUtil.addVip(dos, dis);
+                    AdminView.addVip(dos, dis);
                     break;
                 //修改会员
                 case "3":
-                    AdminUtil.updateVip(dos, dis);
+                    AdminView.updateVip(dos, dis);
                     break;
                 //删除会员
                 case "4":
-                    AdminUtil.delVip(dos, dis);
+                    AdminView.delVip(dos, dis);
                     break;
                 //返回主页
                 case "5":
@@ -252,23 +245,23 @@ public class AdminView {
             switch (input) {
                 //查询今日营业额
                 case "1":
-                    AdminUtil.querySell(dos, dis, "today");
+                    AdminView.querySell(dos, dis, "today");
                     break;
                 //查询本月营业额
                 case "2":
-                    AdminUtil.querySell(dos, dis, "month");
+                    AdminView.querySell(dos, dis, "month");
                     break;
                 //查询本季度营业额
                 case "3":
-                    AdminUtil.querySell(dos, dis, "season");
+                    AdminView.querySell(dos, dis, "season");
                     break;
                 //查询总营业额
                 case "4":
-                    AdminUtil.querySell(dos, dis, "total");
+                    AdminView.querySell(dos, dis, "total");
                     break;
                 //查询指定日期区间的营业额
                 case "5":
-                    AdminUtil.queryRangeSell(dos, dis);
+                    AdminView.queryRangeSell(dos, dis);
                     break;
                 //返回主页
                 case "6":
@@ -293,23 +286,23 @@ public class AdminView {
             switch (input) {
                 //查看今日考勤
                 case "1":
-                    AdminUtil.queryTodayClock(dos, dis);
+                    AdminView.queryTodayClock(dos, dis);
                     break;
                 //查看指定日期的所有考勤
                 case "2":
-                    AdminUtil.queryClockByDate(dos, dis, "all");
+                    AdminView.queryClockByDate(dos, dis, "all");
                     break;
                 //查看指定日期的所有异常考勤
                 case "3":
-                    AdminUtil.queryClockByDate(dos, dis, "error");
+                    AdminView.queryClockByDate(dos, dis, "error");
                     break;
                 //查看全部考勤
                 case "4":
-                    AdminUtil.queryAllClock(dos, dis);
+                    AdminView.queryAllClock(dos, dis);
                     break;
                 //修改员工考勤
                 case "5":
-                    AdminUtil.adminClock(dos, dis);
+                    AdminView.adminClock(dos, dis);
                     break;
                 //返回主页
                 case "6":
@@ -336,19 +329,19 @@ public class AdminView {
             switch (input) {
                 //查询采购员
                 case "1":
-                    AdminUtil.queryEmp(dos, dis, "buyer");
+                    AdminView.queryEmp(dos, dis, "buyer");
                     break;
                 //添加采购员
                 case "2":
-                    AdminUtil.addEmp(dos, dis, "buyer");
+                    AdminView.addEmp(dos, dis, "buyer");
                     break;
                 //修改采购员
                 case "3":
-                    AdminUtil.updateEmp(dos, dis, "buyer");
+                    AdminView.updateEmp(dos, dis, "buyer");
                     break;
                 //删除采购员
                 case "4":
-                    AdminUtil.delEmp(dos, dis, "buyer");
+                    AdminView.delEmp(dos, dis, "buyer");
                     break;
                 case "5":
                     indexView();
@@ -374,19 +367,19 @@ public class AdminView {
             switch (input) {
                 //查询收银员
                 case "1":
-                    AdminUtil.queryEmp(dos, dis, "cashier");
+                    AdminView.queryEmp(dos, dis, "cashier");
                     break;
                 //添加收银员
                 case "2":
-                    AdminUtil.addEmp(dos, dis, "cashier");
+                    AdminView.addEmp(dos, dis, "cashier");
                     break;
                 //修改收银员
                 case "3":
-                    AdminUtil.updateEmp(dos, dis, "cashier");
+                    AdminView.updateEmp(dos, dis, "cashier");
                     break;
                 //删除收银员
                 case "4":
-                    AdminUtil.delEmp(dos, dis, "cashier");
+                    AdminView.delEmp(dos, dis, "cashier");
                     break;
                 case "5":
                     indexView();

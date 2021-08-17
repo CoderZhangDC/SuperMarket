@@ -1,6 +1,8 @@
-package com.client.client.utils;
+package com.client.client.view;
 
 import com.alibaba.fastjson.JSON;
+import com.client.client.utils.CheckUtil;
+import com.client.client.utils.DateFormatUtil;
 import com.server.pojo.Employee;
 import com.server.pojo.SellInfo;
 import com.server.pojo.Vip;
@@ -19,7 +21,7 @@ import java.util.Scanner;
  * @Date 2021/8/12 21:27
  * @Version 1.0
  */
-public class CashierUtil {
+public class CashierView {
     private static Scanner sc = new Scanner(System.in);
 
     public static void Shell(DataOutputStream dos, DataInputStream dis, Employee cashier) throws IOException {
@@ -31,7 +33,7 @@ public class CashierUtil {
         if (useVip.equalsIgnoreCase("Y")) {
             //获取会员卡号
             while (true) {
-                System.out.println("请输入会员卡号（输入0退出）：");
+                System.out.println("请输入会员卡号/绑定手机号（输入0退出）：");
                 String vipNumber = sc.next();
                 if (vipNumber.equals("0")){
                     break;
@@ -60,12 +62,17 @@ public class CashierUtil {
             }
             System.out.println("请输入购买数量：");
             String buyNumber = sc.next();
-            SellInfo si = new SellInfo();
+            SellInfo si;
             try {
                 //创建销售记录对象
                 si  = new SellInfo();
                 si.setGoodNumber(Integer.parseInt(goodNumber));
                 si.setQuantity(Integer.parseInt(buyNumber));
+                //判断输入的数组是否小于等于0
+                if (si.getQuantity()<=0){
+                    System.out.println("输入的数量必须大于0！");
+                    continue;
+                }
                 si.setEmpNumber(cashier.getNumber());
                 //如果使用了会员卡
                 if (vip!=null){
@@ -99,12 +106,12 @@ public class CashierUtil {
         BigDecimal totalPrice = new BigDecimal("0.00");
         for (int i=0;i<sellInfos.size();i++){
             if (sellInfos.get(i).getVipNumber()!=null){
-                System.out.println(i+1+"\t\t\t"+sellInfos.get(i).getGoodName()+"\t\t\t"+sellInfos.get(i).getQuantity()+"\t\t\t"+sellInfos.get(i).getGoodPrice());
+                System.out.println(i+1+"\t\t\t"+sellInfos.get(i).getGoodName()+"\t\t\t"+sellInfos.get(i).getQuantity()+"\t\t\t"+sellInfos.get(i).getGoodPrice().multiply(new BigDecimal(sellInfos.get(i).getQuantity())));
             }else{
-                System.out.println(i+1+"\t\t\t"+sellInfos.get(i).getGoodName()+"\t\t\t"+sellInfos.get(i).getQuantity()+"\t\t\t"+sellInfos.get(i).getGoodPrice());
+                System.out.println(i+1+"\t\t\t"+sellInfos.get(i).getGoodName()+"\t\t\t"+sellInfos.get(i).getQuantity()+"\t\t\t"+sellInfos.get(i).getGoodPrice().multiply(new BigDecimal(sellInfos.get(i).getQuantity())));
             }
             //计算总价格
-            totalPrice = totalPrice.add(sellInfos.get(i).getGoodPrice());
+            totalPrice = totalPrice.add(sellInfos.get(i).getGoodPrice().multiply(new BigDecimal(sellInfos.get(i).getQuantity())));
         }
         System.out.println("\t\t\t\t\t\t\t\t\t\t本次消费："+totalPrice);
     }
@@ -124,7 +131,6 @@ public class CashierUtil {
             try {
                 //判断手机号输入是否有误
                 if (!CheckUtil.isValidPhoneNumber(split[1])){
-                    System.out.println("（手机号）格式输入有误！");
                     continue;
                 }
                 vip.setName(split[0]);
@@ -149,7 +155,7 @@ public class CashierUtil {
     //查询会员积分
     public static void findVipScore(DataOutputStream dos, DataInputStream dis) throws IOException {
         while (true){
-            System.out.println("输入会员卡号：");
+            System.out.println("输入会员卡号/手机号：");
             String vipNumber = sc.next();
             //请求服务器查询会员账号
             dos.writeUTF("Cashier_Vip_query:"+vipNumber);
@@ -166,4 +172,5 @@ public class CashierUtil {
             break;
         }
     }
+
 }

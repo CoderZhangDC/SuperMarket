@@ -25,4 +25,10 @@ public interface GoodDao {
 
     //修改库存
     void updateInventoryGoods(Goods goods);
+
+    //查询所有商品
+    List<Goods> queryAllGoods();
+
+    //删除商品
+    int delGoods(String message);
 }

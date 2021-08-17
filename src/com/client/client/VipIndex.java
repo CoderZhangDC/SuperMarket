@@ -1,13 +1,16 @@
 package com.client.client;
 
 import com.alibaba.fastjson.JSON;
+import com.server.pojo.Goods;
 import com.server.pojo.ScoreInfo;
 import com.server.pojo.Vip;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -15,15 +18,15 @@ import java.util.Scanner;
  * @Date 2021/8/11 16:13
  * @Version 1.0
  */
-public class VipView {
+public class VipIndex {
     private Vip vip;
     private Socket socket;
     private Scanner sc = new Scanner(System.in);
 
-    public VipView() {
+    public VipIndex() {
     }
 
-    public VipView(Vip vip, Socket socket) {
+    public VipIndex(Vip vip, Socket socket) {
         this.vip = vip;
         this.socket = socket;
     }
@@ -54,6 +57,15 @@ public class VipView {
     private void scoreExchange() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
+            //获取商品信息
+            dos.writeUTF("Buyer_Query_allGoods:");
+            String s1 = dis.readUTF();
+            List<Goods> goodsList = JSON.parseArray(s1, Goods.class);
+            //打印商品
+            System.out.println("商品编号\t\t商品名称\t\t\t所需积分");
+            for (Goods g:goodsList){
+                System.out.println(g.getNumber()+"\t\t\t"+g.getName()+"\t\t\t"+g.getPrice().multiply(new BigDecimal("10")));
+            }
             System.out.println("你的剩余积分："+vip.getScore());
             while (true) {
                 //获取用户要兑换的商品编号

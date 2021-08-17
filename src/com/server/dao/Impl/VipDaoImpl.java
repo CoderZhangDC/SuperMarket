@@ -24,7 +24,7 @@ public class VipDaoImpl implements VipDao {
             return null;
         }
         Vip vip = null;
-        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_remark=1 and v_number=?", number);
+        ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_remark=1 and (v_number=? or v_phone=?)", number,number);
         try {
             if (rs.next()){
                 vip = new Vip();
@@ -86,6 +86,7 @@ public class VipDaoImpl implements VipDao {
 
     @Override
     public int updateVip(Vip vip) {
+        System.out.println(vip);
         return JDBCUtil.executeUpdate("update vip set v_name=?,v_score=?,v_phone=? where v_number=?",
                 vip.getName(),vip.getScore(),vip.getPhone(),vip.getNumber());
     }

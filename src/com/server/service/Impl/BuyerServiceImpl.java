@@ -38,4 +38,16 @@ public class BuyerServiceImpl implements BuyerService {
         gd.updateInventoryGoods(goods);
         return "库存修改成功！";
     }
+
+    @Override
+    public String queryAllGoods() {
+        //查询数据库中所有上架的商品
+        return JSON.toJSONString(gd.queryAllGoods());
+    }
+
+    @Override
+    public String delGoods(String message) {
+        int i = gd.delGoods(message);
+        return i==0?"下架失败！":"下架成功！";
+    }
 }

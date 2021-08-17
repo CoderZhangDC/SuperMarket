@@ -1,7 +1,7 @@
 package com.client.client;
 
-import com.client.client.utils.CashierUtil;
-import com.client.client.utils.EmpUtil;
+import com.client.client.view.CashierView;
+import com.client.client.view.EmpView;
 import com.server.pojo.Employee;
 
 import java.io.DataInputStream;
@@ -15,15 +15,15 @@ import java.util.Scanner;
  * @Date 2021/8/11 16:12
  * @Version 1.0
  */
-public class CashierView {
+public class CashierIndex {
     private Employee cashier;
     private Socket socket;
     private Scanner sc = new Scanner(System.in);
 
-    public CashierView() {
+    public CashierIndex() {
     }
 
-    public CashierView(Employee cashier, Socket socket) {
+    public CashierIndex(Employee cashier, Socket socket) {
         this.cashier = cashier;
         this.socket = socket;
     }
@@ -31,7 +31,8 @@ public class CashierView {
     public void indexView() {
         System.out.println("---------------欢迎您" + cashier.getUsername() + "(收银员)---------------");
         System.out.println("1.收银结算\t\t\t2.会员积分查询\t\t3.开通会员");
-        System.out.println("4.上班打卡\t\t\t5.下班打卡\t\t\t6.退出");
+        System.out.println("4.上班打卡\t\t\t5.下班打卡\t\t\t6.修改个人信息");
+        System.out.println("7.退出");
         //获取用户输入
         String input = sc.next();
         switch (input) {
@@ -51,6 +52,9 @@ public class CashierView {
                 clockOff();
                 break;
             case "6":
+                updateInfo();
+                break;
+            case "7":
                 System.out.println("退出成功！");
                 System.exit(1);
                 break;
@@ -65,7 +69,7 @@ public class CashierView {
     private void clockOff() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockOff(dos, dis, cashier);
+            EmpView.clockOff(dos, dis, cashier);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,7 +80,7 @@ public class CashierView {
     private void clockIn() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            EmpUtil.clockIn(dos, dis, cashier);
+            EmpView.clockIn(dos, dis, cashier);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,7 +91,7 @@ public class CashierView {
     private void openVip() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            CashierUtil.addVip(dos, dis);
+            CashierView.addVip(dos, dis);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,7 +102,7 @@ public class CashierView {
     private void findVipScore() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            CashierUtil.findVipScore(dos, dis);
+            CashierView.findVipScore(dos, dis);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,7 +113,18 @@ public class CashierView {
     private void settle() {
         try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
              DataInputStream dis = new DataInputStream(socket.getInputStream())) {
-            CashierUtil.Shell(dos, dis,cashier);
+            CashierView.Shell(dos, dis,cashier);
+            indexView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //修改个人信息
+    private void updateInfo() {
+        try (DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+             DataInputStream dis = new DataInputStream(socket.getInputStream())) {
+            EmpView.updateEmpInfo(dos, dis,cashier);
             indexView();
         } catch (IOException e) {
             e.printStackTrace();

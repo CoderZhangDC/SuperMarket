@@ -1,8 +1,12 @@
 package com.server.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.server.dao.ClockDao;
+import com.server.dao.EmpDao;
 import com.server.dao.Impl.ClockDaoImpl;
+import com.server.dao.Impl.EmpDaoImpl;
 import com.server.pojo.ClockInfo;
+import com.server.pojo.Employee;
 import com.server.service.EmployeeService;
 
 import java.util.Calendar;
@@ -15,6 +19,7 @@ import java.util.Date;
  */
 public class EmployeeServiceImpl implements EmployeeService {
     private ClockDao cd = new ClockDaoImpl();
+    private EmpDao ed = new EmpDaoImpl();
 
     @Override
     public String clockIn(String empNumber) {
@@ -58,5 +63,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         //插入打卡记录
         cd.insertClockOff(empNumber);
         return "下班打卡成功！";
+    }
+
+    @Override
+    public String updateInfo(String message) {
+        //解析JSON
+        Employee employee = JSON.parseObject(message, Employee.class);
+        //调用数据库更新员工信息
+        int i = ed.updateEmp(employee);
+        return i==0?"修改失败！":"修改成功！";
     }
 }

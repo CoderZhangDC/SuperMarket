@@ -155,6 +155,10 @@ public class ServerRunnable implements Runnable {
                     case "Admin_Vip_query":
                         dos.writeUTF(as.queryAllVip());
                         break;
+                    //查询所有会员信息
+                    case "Admin_Vip_query_number":
+                        dos.writeUTF(as.queryVipByNumber(message));
+                        break;
                     //添加会员
                     case "Admin_Vip_add":
                         dos.writeUTF(as.addVip(message));
@@ -230,6 +234,30 @@ public class ServerRunnable implements Runnable {
                     //薪资查询，top5
                     case "Admin_EmpSalary_query_top5":
                         dos.writeUTF(as.querySalaryTop("top5"));
+                        break;
+                    //修改员工姓名
+                    case "Emp_Update_name":
+                        dos.writeUTF(es.updateInfo(message));
+                        break;
+                    //修改员工手机号
+                    case "Emp_Update_sex":
+                        dos.writeUTF(es.updateInfo(message));
+                        break;
+                    //修改员工性别
+                    case "Emp_Update_phone":
+                        dos.writeUTF(es.updateInfo(message));
+                        break;
+                    //修改员工密码
+                    case "Emp_Update_password":
+                        dos.writeUTF(es.updateInfo(message));
+                        break;
+                    //查看所有上架的商品
+                    case "Buyer_Query_allGoods":
+                        dos.writeUTF(bs.queryAllGoods());
+                        break;
+                    //商品下架
+                    case "Buyer_del_goods":
+                        dos.writeUTF(bs.delGoods(message));
                         break;
                 }
             }

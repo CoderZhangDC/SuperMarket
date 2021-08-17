@@ -1,18 +1,17 @@
-package com.client.client.utils;
+package com.client.client.view;
 
 import com.alibaba.fastjson.JSON;
-import com.client.client.AdminView;
+import com.client.client.utils.CheckUtil;
+import com.client.client.utils.DateFormatUtil;
 import com.server.pojo.ClockInfo;
 import com.server.pojo.Employee;
 import com.server.pojo.Vip;
 import com.server.pojo.WorkDate;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,7 +20,7 @@ import java.util.Scanner;
  * @Date 2021/8/12 8:58
  * @Version 1.0
  */
-public class AdminUtil {
+public class AdminView {
     private static Scanner sc = new Scanner(System.in);
 
     //查询员工
@@ -40,7 +39,7 @@ public class AdminUtil {
         //打印输出
         System.out.println("编号\t\t姓名\t\t性别\t电话\t\t\t注册时间\t\t\t\t\t剩余补卡次数");
         for (Employee e:employeeList){
-            System.out.println(e.getNumber()+"\t\t"+e.getUsername()+"\t\t"+e.getSex()+"\t\t"+e.getPhone()+"\t\t"+DateFormatUtil.datetimeFormat(e.getRegisterTime())+"\t\t"+e.getReClockCount());
+            System.out.println(e.getNumber()+"\t\t"+e.getUsername()+"\t\t"+e.getSex()+"\t\t"+e.getPhone()+"\t\t"+ DateFormatUtil.datetimeFormat(e.getRegisterTime())+"\t\t"+e.getReClockCount());
         }
     }
 
@@ -299,20 +298,39 @@ public class AdminUtil {
 
     //修改vip
     public static void updateVip(DataOutputStream dos, DataInputStream dis) throws IOException {
+        Vip vip1 = null;
         while (true) {
-            System.out.println("请输入要修改的会员编号：");
+            System.out.println("请输入要修改的会员编号/手机号（输入0退出）：");
             String vipNumber = sc.next();
-            System.out.println("请输入要修改的信息（姓名-积分-电话）：");
+            //退出
+            if (vipNumber.equals("0")) {
+                return;
+            }
+            dos.writeUTF("Admin_Vip_query_number:" + vipNumber);
+            String s1 = dis.readUTF();
+            vip1 = JSON.parseObject(s1, Vip.class);
+            //如果查询结果为空
+            if (vip1 != null) {
+                break;
+            }
+            System.out.println("该会员号不存在！");
+        }
+        while (true) {
+            System.out.println("姓名：" + vip1.getName() + "\n性别：" + vip1.getScore() + "\n手机号码：" + vip1.getPhone());
+            System.out.println("请输入要修改的信息（姓名-积分-电话）（输入0退出）：");
             String message = sc.next();
+            if (message.equals("0")){
+                break;
+            }
             String[] split = message.split("-");
             //创建会员对象
             Vip vip = new Vip();
             try {
                 //判断手机号输入是否有误
-                if (!CheckUtil.isValidPhoneNumber(split[2])){
+                if (!CheckUtil.isValidPhoneNumber(split[2])) {
                     continue;
                 }
-                vip.setNumber(vipNumber);
+                vip.setNumber(vip1.getNumber());
                 vip.setName(split[0]);
                 vip.setScore(Integer.parseInt(split[1]));
                 vip.setPhone(split[2]);

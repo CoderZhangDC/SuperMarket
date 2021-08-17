@@ -34,4 +34,5 @@ public interface VipDao {
 
     //添加积分兑换记录
     void insertScoreInfo(ScoreInfo scoreInfo);
+
 }

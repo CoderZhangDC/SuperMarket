@@ -17,4 +17,10 @@ public interface BuyerService {
 
     //添加库存
     String addGoodInventory(String message);
+
+    //查询所有商品信息
+    String queryAllGoods();
+
+    //删除商品
+    String delGoods(String message);
 }

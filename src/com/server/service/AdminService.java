@@ -90,4 +90,7 @@ public interface AdminService {
 
     //薪水区间查询
     String querySalaryRange(String message);
+
+    //更加number查找vip
+    String queryVipByNumber(String message);
 }

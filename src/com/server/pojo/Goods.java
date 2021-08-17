@@ -20,4 +20,5 @@ public class Goods {
     private BigDecimal price;
     private BigDecimal vipPrice;
     private int inventory;
+    private int remark;
 }

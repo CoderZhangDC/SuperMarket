@@ -12,7 +12,6 @@ import com.server.utils.VipNumberUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -141,6 +140,11 @@ public class AdminServiceImpl implements AdminService {
         }
         //调用数据库查询
         return JSON.toJSONString(ed.queryEmpBySalaryRange(integers.get(0),integers.get(1)));
+    }
+
+    @Override
+    public String queryVipByNumber(String message) {
+        return JSON.toJSONString(vd.findVipByNumber(message));
     }
 
     @Override

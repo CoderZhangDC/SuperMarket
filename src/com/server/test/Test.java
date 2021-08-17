@@ -1,12 +1,6 @@
 package com.server.test;
 
-import com.client.client.utils.CheckUtil;
-import com.server.dao.Impl.SellDaoImpl;
-import com.server.dao.SellDao;
-import com.server.pojo.Report;
-
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * @Author:zdc

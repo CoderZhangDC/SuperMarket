@@ -15,7 +15,7 @@ import java.util.Scanner;
  * @Version 1.0
  */
 public class LoginView {
-    static Scanner sc = new Scanner(System.in);
+    private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         //获取连接

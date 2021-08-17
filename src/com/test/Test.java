@@ -1,9 +1,8 @@
-package com.server.test;
+package com.test;
 
 import com.server.utils.SmsUtil;
 
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  * @Author:zdc

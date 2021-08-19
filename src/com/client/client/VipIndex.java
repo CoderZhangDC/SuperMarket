@@ -62,9 +62,9 @@ public class VipIndex {
             String s1 = dis.readUTF();
             List<Goods> goodsList = JSON.parseArray(s1, Goods.class);
             //打印商品
-            System.out.println("商品编号\t\t商品名称\t\t\t所需积分");
+            System.out.println("商品编号\t\t商品名称\t\t\t所需积分\t\t\t库存");
             for (Goods g:goodsList){
-                System.out.println(g.getNumber()+"\t\t\t"+g.getName()+"\t\t\t"+g.getPrice().multiply(new BigDecimal("10")));
+                System.out.println(g.getNumber()+"\t\t\t"+g.getName()+"\t\t\t"+g.getPrice().multiply(new BigDecimal("10"))+"\t\t\t"+g.getInventory());
             }
             System.out.println("你的剩余积分："+vip.getScore());
             while (true) {
@@ -76,11 +76,16 @@ public class VipIndex {
                 ScoreInfo scoreInfo = null;
                 //判断是否输入格式有误
                 try {
+
                     scoreInfo = new ScoreInfo();
                     scoreInfo.setScore(vip.getScore());
                     scoreInfo.setVipNumber(vip.getNumber());
                     scoreInfo.setGoodNumber(Integer.parseInt(goodNumber));
                     scoreInfo.setGoodQuantity(Integer.parseInt(goodQuantity));
+                    if (scoreInfo.getGoodQuantity()<=0){
+                        System.out.println("输入的数量必须大于0！");
+                        continue;
+                    }
                 }catch (Exception e){
                     System.out.println("输入格式有误！");
                     continue;
@@ -96,6 +101,11 @@ public class VipIndex {
                 }
                 //如果返回积分不足
                 if (s.equals("兑换失败，积分不足！")){
+                    System.out.println(s);
+                    continue;
+                }
+                //如果返回库存不足
+                if (s.equals("兑换失败，库存不足！")){
                     System.out.println(s);
                     continue;
                 }

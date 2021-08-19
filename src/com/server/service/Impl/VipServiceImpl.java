@@ -7,6 +7,7 @@ import com.server.dao.Impl.VipDaoImpl;
 import com.server.dao.VipDao;
 import com.server.pojo.Goods;
 import com.server.pojo.ScoreInfo;
+import com.server.pojo.SellInfo;
 import com.server.service.VipService;
 import com.server.utils.SmsUtil;
 
@@ -39,6 +40,15 @@ public class VipServiceImpl implements VipService {
         if (scoreInfo.getScore()< goodScore){
             return "兑换失败，积分不足！";
         }
+        //判断库存是否充足
+        if (scoreInfo.getGoodQuantity()>goods.getInventory()){
+            return "兑换失败，库存不足！";
+        }
+        //更新库存
+        SellInfo sellInfo = new SellInfo();
+        sellInfo.setQuantity(scoreInfo.getGoodQuantity());
+        sellInfo.setGoodNumber(scoreInfo.getGoodNumber());
+        gd.updateInventory(sellInfo);
         //调用数据库修改积分表
         vd.updateVipScore(scoreInfo.getVipNumber(),goodScore);
         //调用数据库添加积分兑换数据
@@ -48,7 +58,6 @@ public class VipServiceImpl implements VipService {
 
     @Override
     public String checkCode(String message) {
-
         //生成一个六位数的验证码
         StringBuilder checkCode = new StringBuilder();
         Random random = new Random();

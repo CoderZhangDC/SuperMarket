@@ -1,8 +1,8 @@
-package com.client.client;
+package com.client;
 
 import com.alibaba.fastjson.JSON;
-import com.client.client.view.BuyerView;
-import com.client.client.view.EmpView;
+import com.client.view.BuyerView;
+import com.client.view.EmpView;
 import com.server.pojo.Employee;
 import com.server.pojo.Goods;
 

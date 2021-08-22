@@ -1,6 +1,6 @@
 package com.server.dao.Impl;
 
-import com.client.client.utils.DateFormatUtil;
+import com.client.utils.DateFormatUtil;
 import com.server.dao.VipDao;
 import com.server.pojo.ScoreInfo;
 import com.server.pojo.Vip;
@@ -23,6 +23,7 @@ public class VipDaoImpl implements VipDao {
         if (number.equals("null")){
             return null;
         }
+        System.out.println(number);
         Vip vip = null;
         ResultSet rs = JDBCUtil.executeQuery("select * from vip where v_remark=1 and (v_number=? or v_phone=?)", number,number);
         try {

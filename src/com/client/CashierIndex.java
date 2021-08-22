@@ -1,7 +1,7 @@
-package com.client.client;
+package com.client;
 
-import com.client.client.view.CashierView;
-import com.client.client.view.EmpView;
+import com.client.view.CashierView;
+import com.client.view.EmpView;
 import com.server.pojo.Employee;
 
 import java.io.DataInputStream;

@@ -1,4 +1,4 @@
-package com.client.client;
+package com.client;
 
 import com.alibaba.fastjson.JSON;
 import com.server.pojo.Employee;
@@ -97,6 +97,10 @@ public class LoginView {
         //获取用户输入的信息
         System.out.println("请输入会员号和手机号(输入0退出):");
         String vipNumber = sc.next();
+        //退出系统
+        if(vipNumber.equals("0")){
+            System.exit(1);
+        }
         String phone = sc.next();
         Vip vip = new Vip();
         vip.setNumber(vipNumber);

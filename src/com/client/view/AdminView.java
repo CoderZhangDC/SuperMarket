@@ -1,8 +1,8 @@
-package com.client.client.view;
+package com.client.view;
 
 import com.alibaba.fastjson.JSON;
-import com.client.client.utils.CheckUtil;
-import com.client.client.utils.DateFormatUtil;
+import com.client.utils.CheckUtil;
+import com.client.utils.DateFormatUtil;
 import com.server.pojo.ClockInfo;
 import com.server.pojo.Employee;
 import com.server.pojo.Vip;
@@ -348,6 +348,29 @@ public class AdminView {
                 //输入格式有误，跳出本次循环，重新输入
                 System.out.println("输入格式有误！");
                 continue;
+            }
+            //向服务器发起短信验证请求
+            dos.writeUTF("Send_Sms_phone:"+vip.getPhone());
+            //接受验证码
+            String s1 = dis.readUTF();
+            //如果该手机被停用
+            if (s1.equals("该手机号已停用！")){
+                System.out.println(s1);
+                continue;
+            }
+            //验证码校验
+            while (true) {
+                System.out.println("请输入验证码（输入0退出）：");
+                String checkCode = sc.next();
+                //退出
+                if (checkCode.equals("0")){
+                    return;
+                }
+                //判断是否输入一致
+                if (s1.equals(checkCode)){
+                    break;
+                }
+                System.out.println("验证码输入错误！");
             }
             //发送服务器请求修改会员
             dos.writeUTF("Admin_Vip_update:" + JSON.toJSONString(vip));
@@ -814,5 +837,4 @@ public class AdminView {
             System.out.println(e.getNumber() + "\t\t" + e.getUsername() + "\t\t" + e.getSex() + "\t" + e.getRoleString() + "\t\t" + e.getPhone() + "\t\t" + DateFormatUtil.datetimeFormat(e.getRegisterTime()) + "\t\t" + e.getReClockCount());
         }
     }
-
 }

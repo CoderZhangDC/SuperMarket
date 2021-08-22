@@ -1,8 +1,8 @@
-package com.client.client.view;
+package com.client.view;
 
 import com.alibaba.fastjson.JSON;
-import com.client.client.utils.CheckUtil;
-import com.client.client.utils.DateFormatUtil;
+import com.client.utils.CheckUtil;
+import com.client.utils.DateFormatUtil;
 import com.server.pojo.Employee;
 import com.server.pojo.SellInfo;
 import com.server.pojo.Vip;

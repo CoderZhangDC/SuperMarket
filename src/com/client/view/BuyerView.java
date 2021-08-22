@@ -1,4 +1,4 @@
-package com.client.client.view;
+package com.client.view;
 
 import com.alibaba.fastjson.JSON;
 import com.server.pojo.Goods;

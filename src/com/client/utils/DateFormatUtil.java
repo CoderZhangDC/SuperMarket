@@ -1,4 +1,4 @@
-package com.client.client.utils;
+package com.client.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

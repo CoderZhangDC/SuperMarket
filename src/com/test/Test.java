@@ -62,6 +62,6 @@ public class Test {
 //        List<Report> reportList = sd.queryReport();
 //        reportList.forEach(li-> System.out.println(li));
 
-//        System.out.println(SmsUtil.sendSms("1355213213312", "1111"));
+//        System.out.println(SmsUtil.sendSms("13", "1111"));
     }
 }

@@ -1,7 +1,7 @@
-package com.client.client;
+package com.client;
 
-import com.client.client.view.AdminView;
-import com.client.client.view.EmpView;
+import com.client.view.AdminView;
+import com.client.view.EmpView;
 import com.server.pojo.Employee;
 import com.server.utils.CloseUtil;
 

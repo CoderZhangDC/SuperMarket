@@ -23,7 +23,7 @@ public class SmsUtil {
         PostMethod post = new PostMethod("http://gbk.sms.webchinese.cn");
         post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=gbk");//在头文件中设置转码
         NameValuePair[] data = {
-                new NameValuePair("Uid", "ZhangDachang"),//用户名
+                new NameValuePair("Uid", "ZhangdctTop"),//用户名
                 new NameValuePair("Key", "d41d8cd98f00b204e980"),//密码
                 new NameValuePair("smsMob", phone),//电话号码
                 new NameValuePair("smsText", "您的验证码为："+number)};//短信内容

@@ -1,6 +1,6 @@
 package com.server.dao.Impl;
 
-import com.client.client.utils.DateFormatUtil;
+import com.client.utils.DateFormatUtil;
 import com.server.dao.SellDao;
 import com.server.pojo.Report;
 import com.server.pojo.SellInfo;
@@ -26,17 +26,17 @@ public class SellDaoImpl implements SellDao {
         //查询会员消费总额
         ResultSet rs2 = null;
         if (type.equals("today")){
-            rs= JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and s_time like ?", DateFormatUtil.dateFormat(new Date())+"%");
-            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and s_time like ?", DateFormatUtil.dateFormat(new Date())+"%");
+            rs= JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and s_time like ?", DateFormatUtil.dateFormat(new Date())+"%");
+            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and s_time like ?", DateFormatUtil.dateFormat(new Date())+"%");
         }else if (type.equals("total")){
-            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null");
-            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null");
+            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null");
+            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null");
         }else if (type.equals("month")){
-            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and DATE_FORMAT(s_time,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')");
-            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and DATE_FORMAT(s_time,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')");
+            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and DATE_FORMAT(s_time,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')");
+            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and DATE_FORMAT(s_time,'%Y%m') = DATE_FORMAT(CURDATE(),'%Y%m')");
         }else if (type.equals("season")){
-            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and quarter(s_time)=quarter(now())");
-            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and quarter(s_time)=quarter(now())");
+            rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and quarter(s_time)=quarter(now())");
+            rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and quarter(s_time)=quarter(now())");
         }
         BigDecimal total = new BigDecimal("0.00");
         try {
@@ -96,8 +96,8 @@ public class SellDaoImpl implements SellDao {
     public String querySellByRange(List<String> list) {
         System.out.println(list.get(0));
         System.out.println(list.get(1));
-        ResultSet rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and s_time between ? and ?",list.get(0),list.get(1)+" 23:59:59");
-        ResultSet rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and s_time between ? and ?",list.get(0),list.get(1)+" 23:59:59");
+        ResultSet rs = JDBCUtil.executeQuery("select sum(s_quantity*vip_price) vip_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is not null and s_time between ? and ?",list.get(0),list.get(1)+" 23:59:59");
+        ResultSet rs2 = JDBCUtil.executeQuery("select sum(s_quantity*c_price) user_total from sell_info s,goods g where s.s_c_number=g.c_number and s.s_vip_number is null and s_time between ? and ?",list.get(0),list.get(1)+" 23:59:59");
         BigDecimal total = new BigDecimal("0.00");
         try {
             if (rs.next()){
